@@ -5,19 +5,11 @@ import { USER_LOGIN } from '../../graphql/queries'
 import { User } from '../../graphql/types/user'
 import { AppRouters } from '../../utils/enums/appRouters'
 import { LocalStorage } from '../../utils/enums/localStorage'
+import { AuthContextInterface, AuthProviderInterface } from './types'
 
-type AuthContext = {
-  signIn: (email: string, password: string) => void
-  loggedUser: User | null
-}
+export const AuthContext = createContext<AuthContextInterface>({} as AuthContextInterface)
 
-type AuthProvider = {
-  children: React.ReactNode
-}
-
-export const AuthContext = createContext<AuthContext>({} as AuthContext)
-
-export const AuthProvider = ({ children }: AuthProvider) => {
+export const AuthProvider = ({ children }: AuthProviderInterface) => {
   const router = useRouter()
   const [loggedUser, setLoggedUser] = useState<User | null>(null)
 
@@ -33,5 +25,10 @@ export const AuthProvider = ({ children }: AuthProvider) => {
     router.push(AppRouters.home)
   }
 
-  return <AuthContext.Provider value={{ signIn, loggedUser }}>{children}</AuthContext.Provider>
+  const signOut = () => {
+    setLoggedUser(null)
+    localStorage.removeItem(LocalStorage.user_token)
+  }
+
+  return <AuthContext.Provider value={{ signIn, signOut, loggedUser }}>{children}</AuthContext.Provider>
 }

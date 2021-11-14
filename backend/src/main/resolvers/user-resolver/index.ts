@@ -4,6 +4,7 @@ import { getUsers } from '../../../service/user/getUsers'
 import { Arg, Query, Resolver } from 'type-graphql'
 import { UserLogin } from '../../schemas/login'
 import { login } from '../../../service/user/login'
+import { authenticateUser } from '../../../service/user/authenticateUser'
 
 @Resolver(() => UserSchema)
 export class UserResolver {
@@ -21,5 +22,12 @@ export class UserResolver {
       @Arg('password') password: string
   ): Promise<UserLogin> {
     return await login(email, password)
+  }
+
+  @Query(() => UserSchema)
+  async authenticateUser (
+    @Arg('token') token: string
+  ): Promise<any> {
+    return await authenticateUser(token)
   }
 }
