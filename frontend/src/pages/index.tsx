@@ -3,28 +3,11 @@ import type { NextPage } from 'next'
 import { Dashboard } from '../components/dashboard'
 import { UserLogin } from '../components/login'
 import { client } from '../graphql/client'
+import { DashboardTemplate } from '../template/dashboard-template'
 
 const Home: NextPage = () => {
-  // client.query({
-  //   query: gql`
-  //   query Users {
-  //     getUsers {
-  //       id
-  //       name
-  //       email
-  //       created_at
-  //       updated_at
-  //     }
-  //   }
-  //   `
-  // }).then((data) => {
-  //   console.log('data')
-  //   console.log(data)
-  // })
-  return (
-    // <Dashboard />
-    <UserLogin />
-  )
+  return <DashboardTemplate />
+
 }
 
 export default Home
