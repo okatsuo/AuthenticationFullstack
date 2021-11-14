@@ -1,3 +1,3 @@
-export enum LocalStorage {
+export enum AppCookies {
   user_token = 'acqucx'
 }

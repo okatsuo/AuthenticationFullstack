@@ -4,6 +4,6 @@ import { UserLogin } from '../components/login'
 import { AuthContext } from '../context/auth'
 
 export const DashboardTemplate = () => {
-  const { loggedUser } = useContext(AuthContext)
-  return loggedUser ? <Dashboard /> : <UserLogin />
+  const { verifyLoggedUser } = useContext(AuthContext)
+  return verifyLoggedUser() ? <Dashboard /> : <UserLogin />
 }

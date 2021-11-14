@@ -5,8 +5,9 @@ import { USER_LOGIN } from '../../graphql/queries'
 import { USER_AUTHENTICATION } from '../../graphql/queries/user-authentication'
 import { User } from '../../graphql/types/user'
 import { AppRouters } from '../../utils/enums/appRouters'
-import { LocalStorage } from '../../utils/enums/localStorage'
+import { AppCookies } from '../../utils/enums/localStorage'
 import { AuthContextInterface, AuthProviderInterface } from './types'
+import Cookie from 'js-cookie'
 
 export const AuthContext = createContext<AuthContextInterface>({} as AuthContextInterface)
 
@@ -22,29 +23,42 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
       }
     })
     setLoggedUser(login.user)
-    localStorage.setItem(LocalStorage.user_token, login.token)
+    Cookie.set(AppCookies.user_token, login.token)
     router.push(AppRouters.home)
   }
 
   const signOut = () => {
     setLoggedUser(null)
-    localStorage.removeItem(LocalStorage.user_token)
+    Cookie.remove(AppCookies.user_token)
+    router.push(AppRouters.home)
+  }
+
+  const verifyLoggedUser = (): boolean => {
+    return !!Cookie.get(AppCookies.user_token)
   }
 
   useEffect(() => {
-    const token = localStorage.getItem(LocalStorage.user_token)
-    if (token !== null) {
+    const token = localStorage.getItem(AppCookies.user_token)
+    if (token !== null && loggedUser !== null) {
       client.query<{ authenticateUser: User }>({
         query: USER_AUTHENTICATION,
         variables: { token }
       }).then(({ data: { authenticateUser } }) => {
         setLoggedUser(authenticateUser)
       }).catch((err) => {
-        console.error(err)
         signOut()
       })
     }
   }, [])
 
-  return <AuthContext.Provider value={{ signIn, signOut, loggedUser }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider
+    value={{
+      signIn,
+      signOut,
+      verifyLoggedUser,
+      loggedUser
+    }}
+  >
+    {children}
+  </AuthContext.Provider>
 }
