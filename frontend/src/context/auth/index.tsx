@@ -1,7 +1,8 @@
 import { useRouter } from 'next/dist/client/router'
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { client } from '../../graphql/client'
 import { USER_LOGIN } from '../../graphql/queries'
+import { USER_AUTHENTICATION } from '../../graphql/queries/user-authentication'
 import { User } from '../../graphql/types/user'
 import { AppRouters } from '../../utils/enums/appRouters'
 import { LocalStorage } from '../../utils/enums/localStorage'
@@ -29,6 +30,21 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
     setLoggedUser(null)
     localStorage.removeItem(LocalStorage.user_token)
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem(LocalStorage.user_token)
+    if (token !== null) {
+      client.query<{ authenticateUser: User }>({
+        query: USER_AUTHENTICATION,
+        variables: { token }
+      }).then(({ data: { authenticateUser } }) => {
+        setLoggedUser(authenticateUser)
+      }).catch((err) => {
+        console.error(err)
+        signOut()
+      })
+    }
+  }, [])
 
   return <AuthContext.Provider value={{ signIn, signOut, loggedUser }}>{children}</AuthContext.Provider>
 }
