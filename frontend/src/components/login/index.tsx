@@ -1,9 +1,16 @@
-import { FormEvent } from 'react'
+import { FormEvent, useContext } from 'react'
+import { AuthContext } from '../../context/auth'
 
 export const UserLogin = () => {
-  const handleSubmit = (event: FormEvent) => {
+  const { signIn } = useContext(AuthContext)
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    console.log('the event:', event)
+    const data = new FormData(event.currentTarget)
+
+    const email = data.get('email')?.toString()
+    const password = data.get('password')?.toString()
+    if (!email || !password) return;
+    signIn(email, password)
   }
   return (
     <div>
