@@ -1,7 +1,9 @@
 import { User } from '.prisma/client'
 import { UserSchema } from '../../schemas/user-schema'
 import { getUsers } from '../../../service/user/getUsers'
-import { Query, Resolver } from 'type-graphql'
+import { Arg, Query, Resolver } from 'type-graphql'
+import { UserLogin } from '../../schemas/login'
+import { login } from '../../../service/user/login'
 
 @Resolver(() => UserSchema)
 export class UserResolver {
@@ -11,5 +13,13 @@ export class UserResolver {
     const result = await getUsers()
     console.log(result)
     return result
+  }
+
+  @Query(() => UserLogin)
+  async login (
+    @Arg('email') email: string,
+      @Arg('password') password: string
+  ): Promise<UserLogin> {
+    return await login(email, password)
   }
 }
