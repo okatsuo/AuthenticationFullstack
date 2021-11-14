@@ -1,16 +1,19 @@
 import 'reflect-metadata'
-import { PrismaClient } from '.prisma/client'
-
-const prisma = new PrismaClient()
+import { ApolloServer } from 'apollo-server'
+import { buildSchema } from 'type-graphql'
+import { UserResolver } from './resolvers/user-resolver'
 
 void (async function Bootstrap () {
-  const newUser = await prisma.user.create({
-    data: {
-      name: 'Rafael',
-      email: 'rafael@mail.com',
-      active: true,
-      password: '12345'
-    }
+  const server = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver]
+    })
   })
-  console.log(newUser)
+
+  const PORT = process.env.PORT || 4100
+  server.listen(PORT).then(({ url }) => {
+    console.log(`server running at ${url}`)
+  }).catch((error) => {
+    console.error(error)
+  })
 })()
