@@ -1,3 +1,3 @@
 export enum AppCookies {
-  user_token = 'acqucx'
+  user_token = 'sat'
 }
