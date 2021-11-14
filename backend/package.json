@@ -25,5 +25,11 @@
     "prisma": "^3.4.2",
     "ts-node": "^10.4.0",
     "typescript": "*"
+  },
+  "dependencies": {
+    "class-validator": "^0.13.1",
+    "graphql": "^16.0.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1"
   }
 }
