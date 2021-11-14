@@ -19,8 +19,11 @@
     "@types/js-cookie": "^3.0.0",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
+    "autoprefixer": "^9",
     "eslint": "7",
     "eslint-config-next": "12.0.3",
+    "postcss": "^7",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "typescript": "4.4.4"
   }
 }

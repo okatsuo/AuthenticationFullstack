@@ -38,8 +38,10 @@ export const AuthProvider = ({ children }: AuthProviderInterface) => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem(AppCookies.user_token)
-    if (token !== null && loggedUser !== null) {
+    const token = Cookie.get(AppCookies.user_token)
+    console.log('entrou no effect');
+    if (token !== null) {
+      console.log('o user tá undefined');
       client.query<{ authenticateUser: User }>({
         query: USER_AUTHENTICATION,
         variables: { token }
