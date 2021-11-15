@@ -1,10 +1,12 @@
 import { User } from '.prisma/client'
 import { UserSchema } from '../../schemas/user-schema'
 import { getUsers } from '../../../service/user/getUsers'
-import { Arg, Query, Resolver } from 'type-graphql'
+import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import { UserLogin } from '../../schemas/login'
 import { login } from '../../../service/user/login'
 import { authenticateUser } from '../../../service/user/authenticateUser'
+import { createUser } from '../../../service/user/createUser'
+import { UserInputInterface } from '../../inputs/user-input'
 
 @Resolver(() => UserSchema)
 export class UserResolver {
@@ -29,5 +31,12 @@ export class UserResolver {
     @Arg('token') token: string
   ): Promise<any> {
     return await authenticateUser(token)
+  }
+
+  @Mutation(() => UserLogin)
+  async userCreate (
+    @Arg('fields') fields: UserInputInterface
+  ): Promise<UserLogin> {
+    return await createUser(fields)
   }
 }

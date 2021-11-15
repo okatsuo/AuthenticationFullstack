@@ -12,6 +12,9 @@ export class UserSchema {
   email: string
 
   @Field()
+  active: boolean
+
+  @Field()
   created_at: Date
 
   @Field()
