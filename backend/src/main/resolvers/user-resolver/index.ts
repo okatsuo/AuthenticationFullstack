@@ -8,6 +8,7 @@ import { authenticateUser } from '../../../service/user/authenticateUser'
 import { createUser } from '../../../service/user/createUser'
 import { UserInputInterface } from '../../../inputs/user-input'
 import { userRole } from '../../../service/user/userRole'
+import { Roles } from '../../../shared/enums'
 
 @Resolver(() => UserSchema)
 export class UserResolver {
@@ -16,7 +17,7 @@ export class UserResolver {
     return await userRole(user.id)
   }
 
-  @Authorized('ADMIN')
+  @Authorized(Roles.ADMIN)
   @Query(() => [UserSchema])
   async getUsers (
   ): Promise<User[]> {

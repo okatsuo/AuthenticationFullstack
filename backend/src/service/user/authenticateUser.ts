@@ -2,7 +2,7 @@ import { User } from '.prisma/client'
 import * as jwt from 'jsonwebtoken'
 import { prismaClient } from '../prisma'
 
-interface UserToken {
+export interface UserToken {
   id: number
   iat: number
 }
