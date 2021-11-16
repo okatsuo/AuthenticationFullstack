@@ -5,19 +5,21 @@ import * as jwt from 'jsonwebtoken'
 
 export const createUser = async (fields: UserInputInterface): Promise<UserLogin> => {
   try {
+    const { roles, ...userFields } = fields
     const newUser = await prismaClient.user.create({
-      data: fields
+      data: {
+        ...userFields,
+        roles: { create: roles }
+      }
     })
+
     const token = jwt.sign(
       { id: newUser.id },
       process.env.SECRET_KEY, {
         expiresIn: Number(process.env.TOKEN_EXPIRE_TIME) * 60 || '1h'
       }
     )
-    return {
-      user: newUser,
-      token
-    }
+    return { user: newUser, token }
   } catch (error) {
     throw new Error(error)
   }

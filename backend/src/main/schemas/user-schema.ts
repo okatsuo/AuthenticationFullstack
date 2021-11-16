@@ -1,4 +1,6 @@
+import { Role } from '.prisma/client'
 import { Field, Int, ObjectType } from 'type-graphql'
+import { RoleSchema } from './role-schema'
 
 @ObjectType()
 export class UserSchema {
@@ -19,4 +21,7 @@ export class UserSchema {
 
   @Field()
   updated_at: Date
+
+  @Field(() => [RoleSchema])
+  roles: Role[]
 }

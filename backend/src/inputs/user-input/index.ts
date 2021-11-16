@@ -1,5 +1,6 @@
 import { IsEmail } from 'class-validator'
 import { Field, InputType } from 'type-graphql'
+import { RoleInputInterface } from '../role-input'
 
 @InputType()
 export class UserInputInterface {
@@ -13,6 +14,9 @@ export class UserInputInterface {
   @Field()
   password: string
 
-  @Field()
-  active: boolean
+  @Field({ nullable: true })
+  active?: boolean
+
+  @Field(() => [RoleInputInterface])
+  roles: RoleInputInterface[]
 }

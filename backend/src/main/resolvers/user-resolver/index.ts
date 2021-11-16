@@ -1,15 +1,21 @@
-import { User } from '.prisma/client'
+import { Role, User } from '.prisma/client'
 import { UserSchema } from '../../schemas/user-schema'
 import { getUsers } from '../../../service/user/getUsers'
-import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Authorized, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql'
 import { UserLogin } from '../../schemas/login'
 import { login } from '../../../service/user/login'
 import { authenticateUser } from '../../../service/user/authenticateUser'
 import { createUser } from '../../../service/user/createUser'
 import { UserInputInterface } from '../../../inputs/user-input'
+import { userRole } from '../../../service/user/userRole'
 
 @Resolver(() => UserSchema)
 export class UserResolver {
+  @FieldResolver()
+  async roles (@Root() user: User): Promise<Role[]> {
+    return await userRole(user.id)
+  }
+
   @Authorized('ADMIN')
   @Query(() => [UserSchema])
   async getUsers (
