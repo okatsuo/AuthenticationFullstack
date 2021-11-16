@@ -19,13 +19,4 @@ model User {
   active     Boolean?
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
-  role       Role[]
-}
-
-model Role {
-  id         Int      @id @default(autoincrement())
-  name       String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
-  user       User[]
 }
