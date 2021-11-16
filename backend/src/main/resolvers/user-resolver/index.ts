@@ -1,7 +1,7 @@
 import { User } from '.prisma/client'
 import { UserSchema } from '../../schemas/user-schema'
 import { getUsers } from '../../../service/user/getUsers'
-import { Arg, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql'
 import { UserLogin } from '../../schemas/login'
 import { login } from '../../../service/user/login'
 import { authenticateUser } from '../../../service/user/authenticateUser'
@@ -10,11 +10,11 @@ import { UserInputInterface } from '../../inputs/user-input'
 
 @Resolver(() => UserSchema)
 export class UserResolver {
+  @Authorized('ADMIN')
   @Query(() => [UserSchema])
   async getUsers (
   ): Promise<User[]> {
     const result = await getUsers()
-    console.log(result)
     return result
   }
 
