@@ -1,5 +1,5 @@
 import { Role } from '.prisma/client'
-import { RoleInputInterface } from '../../../main/inputs/role-input'
+import { RoleInputInterface } from '../../../inputs/role-input'
 import { prismaClient } from '../../prisma'
 
 export const roleCreate = async (fields: RoleInputInterface): Promise<Role> => {

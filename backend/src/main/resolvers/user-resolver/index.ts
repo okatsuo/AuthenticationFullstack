@@ -6,7 +6,7 @@ import { UserLogin } from '../../schemas/login'
 import { login } from '../../../service/user/login'
 import { authenticateUser } from '../../../service/user/authenticateUser'
 import { createUser } from '../../../service/user/createUser'
-import { UserInputInterface } from '../../inputs/user-input'
+import { UserInputInterface } from '../../../inputs/user-input'
 
 @Resolver(() => UserSchema)
 export class UserResolver {

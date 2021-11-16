@@ -1,4 +1,4 @@
-import { UserInputInterface } from '../../main/inputs/user-input'
+import { UserInputInterface } from '../../inputs/user-input'
 import { UserLogin } from '../../main/schemas/login'
 import { prismaClient } from '../prisma'
 import * as jwt from 'jsonwebtoken'
